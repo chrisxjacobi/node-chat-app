@@ -1,4 +1,4 @@
-// loaded http server, configured to integrate socket.io for client <-> server connections, used built in events (connect/disconnect)
+// set up custom events to emit (create) and listen to, passed data from server <-> client using first function argument
 
 const path = require('path');
 const http = require('http');
@@ -16,6 +16,18 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('New user connected');
 
+  socket.emit('newMessage', {
+    from: 'chris@example.com',
+    text: 'Do you want to meet up at 6?',
+    createdAt: 456
+  });
+
+  socket.on('createMessage', (message) => {
+    console.log('createMessage', message);
+  })
+
+
+
   socket.on('disconnect', () => {
     console.log('User was disconnected');
   });
@@ -27,10 +39,7 @@ server.listen(port, () => {
 
 
 
-
-
 // web sockets are persistent. communication is open for as long as server/client likes.
-
 
 // console.log(__dirname + '/../public');
 // console.log(publicPath);
