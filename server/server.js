@@ -1,4 +1,4 @@
-// added broadcast
+// added acknowledgements from server via a callback which is seen in front end, added message form and showed incoming messages in browser using jQuery
 
 const path = require('path');
 const http = require('http');
@@ -21,23 +21,18 @@ io.on('connection', (socket) => {
 
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
-
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
-    // socket.broadcast.emit('newMessage', {
-    //   from: message.from,
-    //   text: message.text,
-    //   createdAt: new Date().getTime()
-    // })
+    callback('This is from the server');
   });
-
-
 
   socket.on('disconnect', () => {
     console.log('User was disconnected');
   });
 });
+
+
 
 server.listen(port, () => {
   console.log(`Listening on port ${port}...`);
