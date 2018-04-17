@@ -1,4 +1,4 @@
-// set up geolocation support so user can share current lat/lng via link, set up test case to make sure geolocation works
+//
 
 const path = require('path');
 const http = require('http');
@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message);
     io.emit('newMessage', generateMessage(message.from, message.text));
-    callback('This is from the server');
+    callback();
   });
 
   socket.on('createLocationMessage', (coords) => {
